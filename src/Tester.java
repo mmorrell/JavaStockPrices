@@ -12,23 +12,13 @@ public class Tester {
 
 			// 5 period simple moving average
 			if (i >= 4) {
-				double fivePeriodMaSum = priceArray[i].getClosePrice()
-						+ priceArray[i - 1].getClosePrice()
-						+ priceArray[i - 2].getClosePrice()
-						+ priceArray[i - 3].getClosePrice()
-						+ priceArray[i - 4].getClosePrice();
-				double fivePeriodMa = fivePeriodMaSum / 5;
+				double fivePeriodMa = getSimpleMovingAverage(5, priceArray, i);
 				System.out.printf(" 5sma: $%.2f", fivePeriodMa);
 			}
-			
+
 			// 20 period simple moving average
 			if (i >= 19) {
-				double twentyPeriodMaSum = 0;
-				for (int j = 0; j < 20; j++) {
-					twentyPeriodMaSum += priceArray[i-j].getClosePrice();
-				}
-				
-				double twentyPeriodMa = twentyPeriodMaSum / 20;
+				double twentyPeriodMa = getSimpleMovingAverage(20, priceArray, i);
 				System.out.printf(" 20sma: $%.2f", twentyPeriodMa);
 			}
 
@@ -51,4 +41,14 @@ public class Tester {
 		}
 	}
 
+	private static double getSimpleMovingAverage(int smaPeriod, CsvRow[] prices, int index){
+		double movingAverage = 0;
+		if (smaPeriod > 0){
+			for (int i = 0; i < smaPeriod; i++) {
+				movingAverage += prices[index - i].getClosePrice();
+			}
+			movingAverage = movingAverage / smaPeriod;
+		}
+		return movingAverage;
+	}
 }
